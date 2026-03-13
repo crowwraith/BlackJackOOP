@@ -6,10 +6,10 @@ namespace BlackJackOOP.Enum
 {
     public enum Suit
     {
-        One = 1,
-        Two = 2,
-        Three = 3,
-        Four = 4,
+        HEARTS = 1,
+        SPADES = 2,
+        DIAMONDS = 3,
+        CLUBS = 4,
 
     }
 }

@@ -1,18 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using BlackJackOOP.Enum;
-namespace BlackJackOOP.Models
+﻿using BlackJackOOP.Enum;
+
+public class Card
 {
-    
-    public class Card
+    public Rank Rank { get; }
+    public Suit Suit { get; }
+
+    private bool isFaceDown;
+
+    public int Value
     {
-        public Rank Rank{ get; }
+        get
+        {
+            switch (Rank)
+            {
+                case Rank.JACK:
+                case Rank.QUEEN:
+                case Rank.KING:
+                    return 10;
 
-        public Suit Suit{ get; }
+                case Rank.ACE:
+                    return 11;
 
-        public int Value{ get; }
-   
-        
+                default:
+                    return (int)Rank;
+            }
+        }
+    }
+
+    public Card(Rank rank, Suit suit, bool isFaceDown)
+    {
+        Rank = rank;
+        Suit = suit;
+        this.isFaceDown = isFaceDown;
+    }
+
+    public void Flip()
+    {
+        isFaceDown = !isFaceDown;
+    }
+
+    public override string ToString()
+    {
+        if (isFaceDown)
+            return "Card is face down";
+
+        return $"{Rank} of {Suit}";
     }
 }
