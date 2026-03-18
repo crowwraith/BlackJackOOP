@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BlackJackOOP.Enum
+namespace BlackJackOOP.Enums
 {
     public enum Suit
     {
