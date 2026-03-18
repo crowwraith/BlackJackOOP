@@ -1,4 +1,5 @@
-using BlackJackOOP.Enum;
+using BlackJackOOP.Enums;
+using BlackJackOOP.Models;
 
 namespace BlackJackOOP
 {
@@ -6,15 +7,17 @@ namespace BlackJackOOP
     {
         public Form1()
         {
+
             InitializeComponent();
             Card card1 = new Card(Rank.KING, Suit.HEARTS, false);
-
+            
+            Deck deck = new Deck();
 
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            
         }
 
     }
