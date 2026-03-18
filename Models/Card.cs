@@ -1,4 +1,4 @@
-﻿using BlackJackOOP.Enum;
+﻿using BlackJackOOP.Enums;
 
 public class Card
 {
