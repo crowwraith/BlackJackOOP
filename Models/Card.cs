@@ -46,4 +46,19 @@ public class Card
 
         return $"{Rank} of {Suit}";
     }
+    public string GetImageFileName()
+    {
+        string rankString = Rank switch
+        {
+            Rank.ACE => "ace",
+            Rank.JACK => "jack",
+            Rank.QUEEN => "queen",
+            Rank.KING => "king",
+            _ => ((int)Rank).ToString() 
+        };
+
+        string suitString = Suit.ToString().ToLower(); 
+
+        return $"{rankString}_of_{suitString}.png";
+    }
 }

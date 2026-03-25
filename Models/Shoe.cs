@@ -14,7 +14,7 @@ namespace BlackJackOOP.Models
             for (int i = 0; i < numberOfDecks; i++)
             {
                 Deck deck = new Deck();
-                Cards.AddRange(deck.cards);
+                Cards.AddRange(deck.Cards);
             }
         }
 
