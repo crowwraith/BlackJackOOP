@@ -70,7 +70,6 @@
             label1.TabIndex = 1;
             label1.Text = "hoeveel spelers doen er mee?";
             label1.ClientSizeChanged += label1_ClientSizeChanged;
-            label1.Click += None;
             // 
             // button2
             // 
@@ -142,9 +141,8 @@
             flowLayoutPanel1.Controls.Add(button2);
             flowLayoutPanel1.Location = new Point(621, 354);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(490, 56);
+            flowLayoutPanel1.Size = new Size(575, 158);
             flowLayoutPanel1.TabIndex = 6;
-            flowLayoutPanel1.Paint += flowLayoutPanel1_Paint;
             // 
             // flowLayoutPanel2
             // 
@@ -158,7 +156,6 @@
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Size = new Size(489, 56);
             flowLayoutPanel2.TabIndex = 7;
-            flowLayoutPanel2.Paint += flowLayoutPanel2_Paint;
             // 
             // flowLayoutPanel3
             // 
@@ -169,7 +166,6 @@
             flowLayoutPanel3.Name = "flowLayoutPanel3";
             flowLayoutPanel3.Size = new Size(171, 54);
             flowLayoutPanel3.TabIndex = 8;
-            flowLayoutPanel3.Paint += flowLayoutPanel3_Paint;
             // 
             // Form1
             // 
@@ -182,7 +178,6 @@
             Controls.Add(flowLayoutPanel1);
             Name = "Form1";
             Text = " ";
-            Load += Form1_Load;
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel2.PerformLayout();
