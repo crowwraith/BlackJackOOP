@@ -2,6 +2,7 @@ using BlackJackOOP.Enums;
 using BlackJackOOP.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -13,6 +14,8 @@ namespace BlackJackOOP
         private List<Player> players = new List<Player>();
         private Deck deck = new Deck();
         private List<FlowLayoutPanel> panels = new List<FlowLayoutPanel>();
+        private Dealer dealer = new Dealer();
+        private FlowLayoutPanel dealerPanel;
         public Form1()
         {
             InitializeComponent();
@@ -91,11 +94,42 @@ namespace BlackJackOOP
             button1.Visible = false;
             flowLayoutPanel1.Visible = false;
             label1.Visible = false;
+
+            // Dealer panel maken
+            dealerPanel = new FlowLayoutPanel();
+            dealerPanel.Width = 400;
+            dealerPanel.Height = 150;
+            dealerPanel.Top = 20;
+            dealerPanel.Left = 500;
+            dealerPanel.BackColor = Color.DarkRed;
+            dealerPanel.BorderStyle = BorderStyle.FixedSingle;
+            dealerPanel.FlowDirection = FlowDirection.TopDown;
+
+            // label
+            Label dealerLabel = new Label();
+            dealerLabel.Text = "Dealer";
+            dealerLabel.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            dealerLabel.ForeColor = Color.White;
+            dealerLabel.AutoSize = true;
+
+            dealerPanel.Controls.Add(dealerLabel);
+
+            // kaarten panel
+            FlowLayoutPanel handPanel = new FlowLayoutPanel();
+            handPanel.FlowDirection = FlowDirection.LeftToRight;
+            handPanel.Width = 400;
+            handPanel.Height = 130;
+            handPanel.BackColor = Color.Transparent;
+
+            dealerPanel.Controls.Add(handPanel);
+
+            this.Controls.Add(dealerPanel);
         }
 
         // Kaarten uitdelen (data, nog geen UI)
         private void DealInitialCards()
         {
+            // spelers
             foreach (var player in players)
             {
                 Hand hand = player.Hands[0];
@@ -103,11 +137,21 @@ namespace BlackJackOOP
                 hand.AddCard(deck.DrawCard());
                 hand.AddCard(deck.DrawCard());
             }
+
+            // dealer
+            dealer.Hand.Cards.Clear();
+
+            dealer.AddCard(deck.DrawCard());
+
+            Card hidden = deck.DrawCard();
+            hidden.Flip(); // 👈 belangrijk
+            dealer.AddCard(hidden);
         }
 
         // Kaarten tonen op scherm
         private void RenderCards()
         {
+            PrintDealerHand();
             for (int i = 0; i < players.Count; i++)
             {
                 FlowLayoutPanel spelerPanel = panels[i];
@@ -173,6 +217,46 @@ namespace BlackJackOOP
             panel.Controls.Add(pb);
         }
 
+        private void RenderDealer()
+        {
+            var handPanel = dealerPanel.Controls.OfType<FlowLayoutPanel>().First();
+            handPanel.Controls.Clear();
+
+            foreach (var card in dealer.Hand.Cards)
+            {
+                PictureBox pb = new PictureBox();
+                pb.Width = 80;
+                pb.Height = 120;
+                pb.SizeMode = PictureBoxSizeMode.StretchImage;
+
+                string fileName = card.IsFaceDown
+                    ? "card_back.png"
+                    : card.GetImageFileName();
+
+                string path = Path.Combine(Application.StartupPath, "PNG-cards-1.3", card.GetImageFileName());
+
+                if (File.Exists(path))
+                    pb.Image = Image.FromFile(path);
+                else
+                    pb.BackColor = Color.Black;
+
+                handPanel.Controls.Add(pb);
+            }
+        }
+        private void PrintDealerHand()
+        {
+            Debug.WriteLine("=== Dealer Hand ===");
+
+            foreach (var card in dealer.Hand.Cards)
+            {
+                if (card.IsFaceDown)
+                    Debug.WriteLine("Face down card");
+                else
+                    Debug.WriteLine($"{card.Rank} of {card.Suit}");
+            }
+
+            Debug.WriteLine("Totaal (zichtbaar): " + dealer.Hand.GetValue());
+        }
         private void label1_ClientSizeChanged(object sender, EventArgs e)
         {
             // voorlopig leeg

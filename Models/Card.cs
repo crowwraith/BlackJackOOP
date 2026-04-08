@@ -6,6 +6,7 @@ public class Card
     public Suit Suit { get; }
 
     private bool isFaceDown;
+    public bool IsFaceDown => isFaceDown;
 
     public int Value
     {
