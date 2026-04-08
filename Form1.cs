@@ -85,6 +85,7 @@ namespace BlackJackOOP
             StartGame();
             DealInitialCards();
             RenderCards();
+            RenderDealer();
         }
 
         // Setup spel en UI
@@ -101,7 +102,7 @@ namespace BlackJackOOP
             dealerPanel.Height = 150;
             dealerPanel.Top = 20;
             dealerPanel.Left = 500;
-            dealerPanel.BackColor = Color.DarkRed;
+            dealerPanel.BackColor = Color.Transparent;
             dealerPanel.BorderStyle = BorderStyle.FixedSingle;
             dealerPanel.FlowDirection = FlowDirection.TopDown;
 
@@ -203,11 +204,19 @@ namespace BlackJackOOP
             pb.Height = 120;
             pb.SizeMode = PictureBoxSizeMode.StretchImage;
 
-            string path = Path.Combine(Application.StartupPath, "PNG-cards-1.3", card.GetImageFileName());
+            // Kies de juiste bestandsnaam
+            string fileName = card.IsFaceDown ? "card_back.png" : card.GetImageFileName();
 
+            // Bouw het pad naar de afbeelding
+            string path = Path.Combine(Application.StartupPath, "PNG-cards-1.3", fileName);
+
+            // Laad de afbeelding veilig
             if (File.Exists(path))
             {
-                pb.Image = Image.FromFile(path);
+                using (var temp = Image.FromFile(path))
+                {
+                    pb.Image = new Bitmap(temp);
+                }
             }
             else
             {
@@ -219,29 +228,19 @@ namespace BlackJackOOP
 
         private void RenderDealer()
         {
-            var handPanel = dealerPanel.Controls.OfType<FlowLayoutPanel>().First();
+            // Haal het juiste panel
+            var handPanel = dealerPanel.Controls.OfType<FlowLayoutPanel>().FirstOrDefault();
+            if (handPanel == null) return;
+
             handPanel.Controls.Clear();
 
+            // Voeg alle kaarten van de dealer toe
             foreach (var card in dealer.Hand.Cards)
             {
-                PictureBox pb = new PictureBox();
-                pb.Width = 80;
-                pb.Height = 120;
-                pb.SizeMode = PictureBoxSizeMode.StretchImage;
-
-                string fileName = card.IsFaceDown
-                    ? "card_back.png"
-                    : card.GetImageFileName();
-
-                string path = Path.Combine(Application.StartupPath, "PNG-cards-1.3", card.GetImageFileName());
-
-                if (File.Exists(path))
-                    pb.Image = Image.FromFile(path);
-                else
-                    pb.BackColor = Color.Black;
-
-                handPanel.Controls.Add(pb);
+                ShowCard(card, handPanel); // gebruik dezelfde ShowCard functie
             }
+
+            handPanel.Refresh();
         }
         private void PrintDealerHand()
         {
